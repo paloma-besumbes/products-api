@@ -1,40 +1,17 @@
-const express = require('express') //Cargo la herramienta
+const express = require('express')
+const productsRoutes = require('./routes/products.routes')
 
 const app = express() // Creo el backend/servidor con express. app = servidor
-app.use(express.json())  // Middleware que pasa la petición a JS para poder trabajar con ella. 
 
-
-
-//Datos en memoria (simulan una base de datos)
-let products = ["libro", "lápiz", "regla"]
-let nextId = 1
-
-
-app.get('/health', (req, res) => {  //Si la url contiene la ruta /health, responde con OK
+app.use(express.json()) //Le decimos a Express que entienda JSON en el body de las peticiones HTTP (Que lo convierta a JS para poder tratar a info). Sin esto, la API no sabe leer los datos que le envían. 
+app.get('/health', (req, res) => { //health check = Una ruta simple para comprobar que el servidor está vivo y funcionando. Se deja en app.js porque es parte de la infraestructura global, no del negocio.
     res.json({ status: 'ok' })
 })
 
-
-
-app.get('/products', (req, res) => {
-    res.json(products) // res.json serializa el array(lo convierte en json), pone el header corrector y cierra la respuesta
-})
-
-
-app.post('/products', (req, res) => {
-    const { name, price, quantity } = req.body //Extraemos la info de producto del body de la petición y las guardamos en constantes.
-
-    const newProduct = {  //Creamos el nuevo producto que presentará el servidor en su BD, con la info que recibimos en la petición y un id que le asignamos aquí.
-        id: nextId,
-        name,
-        price,
-        quantity
-    }
-
-    nextId++ //Sumamos 1 a la variable que asigna los id, de forma que la próxima vez que se llame a post, el producto añadido tendrá un id diferente. 
-    products.push(newProduct) //Añadimos el producto(objeto) recién creadon al final del array de productos que tenemos en la 'BD'.
-
-    res.status(201).json(newProduct) //Respuesta: nuevo producto creado, en formato JSON(serializado con el .json) + el status 201 = "Creado con éxito".
-})
+// Usamos las rutas
+app.use(productsRoutes)
 
 module.exports = app
+
+//App es la aplicación principal (Es como decir "Toda la web")
+// Router es un subconjunto de rutas relacionadas entre sí (Como decir la sección "productos", "usuarios", etc.)
