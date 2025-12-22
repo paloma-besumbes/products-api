@@ -5,6 +5,8 @@ const express = require('express') //Cargo la herramienta
 
 const router = express.Router()
 
+const validateProduct = require('../middlewares/validateProduct')
+
 
 
 const {
@@ -30,12 +32,12 @@ router.get('/products/:id', getProductById)
 
 //CREATE product
 
-router.post('/products', createProduct)
+router.post('/products', validateProduct, createProduct)
 
 
 // UPDATE product (PUT)
 
-router.put('/products/:id', updateProduct)
+router.put('/products/:id', validateProduct, updateProduct)
 
 
 //PARTIAL UPDATE product (PATCH)

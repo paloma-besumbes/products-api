@@ -69,13 +69,30 @@ function patchProduct(req, res) {
 
     const product = products.find(p => p.id === id)
 
+    const { name, price, quantity } = req.body
+
+    //A continuación, tratamos los posibles errores:  Que no se encuentre el producto que queremos parchear o que se introduzcan datos inválidos. 
+
     if (!product) {
 
         return res.status(404).json({ error: 'Product not found' })
     }
 
+    if (name !== undefined && typeof name !== 'string') {
+        return res.status(400).json({ error: 'Invalid name' })
+    }
 
-    const { name, price, quantity } = req.body
+    if (price !== undefined && typeof price !== 'number') {
+        return res.status(400).json({ error: 'Invalid price' })
+    }
+
+    if (quantity !== undefined && typeof quantity !== 'number') {
+        return res.status(400).json({ error: 'Invalid quantity' })
+    }
+
+
+    //Pasados estos contrles, si una de las variables está modificada, la actualizamos en el objeto de la base de datos. 
+
     if (name !== undefined) product.name = name //Usando undefined permitimos valores falsy, como 0, y evitamos que se borren datos sin querer. 
     if (price !== undefined) product.price = price
     if (quantity !== undefined) product.quantity = quantity
