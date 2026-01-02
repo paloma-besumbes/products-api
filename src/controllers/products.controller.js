@@ -8,17 +8,17 @@ const productRepository = require('../repositories/products.repository')
 
 // GET /products
 
-function getAllProducts(req, res) {
-    const products = productRepository.getAll()
+async function getAllProducts(req, res) {
+    const products = await productRepository.getAll()
     res.json(products)
 }
 
 
 // GET /products/:id
 
-function getProductById(req, res) {
+async function getProductById(req, res) {
     const id = Number(req.params.id) //Convertimos el id de la petición a Number, porque todos los parámetros que nos llegan en la request son strings. 
-    const product = productRepository.getById(id)
+    const product = await productRepository.getById(id)
 
 
     if (!product) {  //Si no se encuentra un producto con esa id, respondemos 404
@@ -31,10 +31,10 @@ function getProductById(req, res) {
 
 //POST /products
 
-function createProduct(req, res) {
+async function createProduct(req, res) {
     const { name, price, quantity } = req.body //Extraemos la info de producto del body de la petición y las guardamos en constantes.
 
-    const newProduct = productRepository.create({
+    const newProduct = await productRepository.create({
         name,
         price,
         quantity
@@ -48,13 +48,13 @@ function createProduct(req, res) {
 
 // PUT /products/:id
 
-function updateProduct(req, res) {
+async function updateProduct(req, res) {
 
     const id = Number(req.params.id)
 
     const { name, price, quantity } = req.body
 
-    const updatedProduct = productRepository.update(id, {
+    const updatedProduct = await productRepository.update(id, {
         name,
         price,
         quantity
@@ -74,7 +74,7 @@ function updateProduct(req, res) {
 
 // PATCH /products/:id
 
-function patchProduct(req, res) {
+async function patchProduct(req, res) {
     const id = Number(req.params.id)
 
     const { name, price, quantity } = req.body
@@ -92,7 +92,7 @@ function patchProduct(req, res) {
         return res.status(400).json({ error: 'Invalid quantity' })
     }
 
-    const updatedProduct = productRepository.patch(id, {
+    const updatedProduct = await productRepository.patch(id, {
         name,
         price,
         quantity
@@ -112,9 +112,9 @@ function patchProduct(req, res) {
 
 // DELETE /products/:id
 
-function deleteProduct(req, res) {
+async function deleteProduct(req, res) {
     const id = Number(req.params.id)
-    const deletedProduct = productRepository.remove(id)
+    const deletedProduct = await productRepository.remove(id)
 
 
     if (!deletedProduct) {
