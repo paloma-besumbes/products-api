@@ -5,16 +5,14 @@
 //Como una piscina de conexiones listas para usar. 
 // 'pg' te ofrece: 1, Client (Gestión manual para cada request) y 2. Pool (Gestión profesional). En Backend real siempre usamos Pool. 
 
-
-
 const { Pool } = require('pg')
 
-const pool = new Pool({ //Aquí le decimos a qué BD vamos a conectar y con qué credenciales. No se abre aún la conexión, solo se configura el Pool. 
-    host: 'localhost',
+const pool = new Pool({
+    host: '127.0.0.1',
+    port: 5432,
     user: 'postgres',
-    password: '231311',
-    database: 'products_db',
-    port: 5432
+    password: 'thomashardy123',
+    database: 'products_db'
 })
 
 module.exports = pool

@@ -1,11 +1,21 @@
 const pool = require('../db')
 
 
+//COUNT ALL
+
+async function countAll() {
+    const result = await pool.query(
+        'SELECT COUNT(*) FROM products'
+    )
+    return Number(result.rows[0].count)
+}
+
+
 //GET ALL
-async function getAll() {
+async function getAll({ limit, offset }) {
 
     const result = await pool.query(
-        'SELECT id, name, price, quantity FROM products ORDER BY id'
+        'SELECT * FROM products ORDER BY id LIMIT $1 OFFSET $2', [limit, offset]
     )
     return result.rows
 }
@@ -49,19 +59,19 @@ async function update(id, { name, price, quantity }) {
 async function patch(id, data) {
     const fields = []
     const values = []
-    let index = 0
+    let index = 1
 
     if (data.name !== undefined && typeof data.name === 'string') {
         fields.push(`name = $${index++}`)
         values.push(data.name)
     }
 
-    if (data.price !== 'undefined' && typeof data.price === 'number') {
+    if (data.price !== undefined && typeof data.price === 'number') {
         fields.push(`price =$${index++}`)
         values.push(data.price)
     }
 
-    if (data.quantity !== 'undefined' && typeof data.quantity === 'number') {
+    if (data.quantity !== undefined && typeof data.quantity === 'number') {
         fields.push(`quantity =$${index++}`)
         values.push(data.quantity)
     }
@@ -98,6 +108,7 @@ async function remove(id) {
 
 
 module.exports = {
+    countAll,
     getAll,
     getById,
     create,

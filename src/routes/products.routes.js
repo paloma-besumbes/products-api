@@ -22,32 +22,32 @@ const {
 
 //GET all products
 
-router.get('/products', getAllProducts)
+router.get('/', getAllProducts)
 
 
 
 //GET products by id
-router.get('/products/:id', getProductById)
+router.get('/:id', getProductById)
 
 
 //CREATE product
 
-router.post('/products', validateProduct, createProduct)
+router.post('/', validateProduct, createProduct)
 
 
 // UPDATE product (PUT)
 
-router.put('/products/:id', validateProduct, updateProduct)
+router.put('/:id', validateProduct, updateProduct)
 
 
 //PARTIAL UPDATE product (PATCH)
 
-router.patch('/products/:id', patchProduct)
+router.patch('/:id', patchProduct)
 
 
 //DELETE product
 
-router.delete('/products/:id', deleteProduct)
+router.delete('/:id', deleteProduct)
 
 
 

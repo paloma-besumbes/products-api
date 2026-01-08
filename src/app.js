@@ -9,7 +9,7 @@ app.get('/health', (req, res) => { //health check = Una ruta simple para comprob
 })
 
 // Usamos las rutas
-app.use(productsRoutes)
+app.use('/products', productsRoutes)
 
 module.exports = app
 
